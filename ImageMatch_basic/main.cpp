@@ -10,8 +10,8 @@ int main()
     
     namedWindow("compare",1);
     
-    Mat Gala1 = imread("Textures/BLV_st_Jacques1.jpg");
-    Mat Gala2 = imread("Textures/BLV_st_Jacques2.jpg");
+    Mat Gala1 = imread("Textures/BLV_st_Jacques2.jpg");
+    Mat Gala2 = imread("Textures/BLV_st_Jacques1.jpg");
     
     Vec2f uv = Vec2f(0.5,0.5);
     
@@ -40,17 +40,21 @@ int main()
     matcher.getGoodKeyPoints(keypoints, matches, goodObjPts, goodScenePts);
     
     int lessCounter = 0;
-    float scale = 0;
+    float diffAccum = 0;
+    
     for(int i = 0; i < matches.size(); i++) {
         float dist1 = matcher.distance(Point2f(200,200), goodObjPts[i]);
         float dist2 = matcher.distance(Point2f(200,200), goodScenePts[i]);
         
-        //cout << dist1 << " " << dist2 << endl;
         if(dist1 < dist2) {
             lessCounter++;
         }
+        
+        diffAccum += (dist1 - dist2);
+        
+        
     }
-    cout << (float)lessCounter / matches.size() << endl;
+    cout << (float)diffAccum / matches.size() << endl;
     
     imshow("compare2",img_matches);
     
