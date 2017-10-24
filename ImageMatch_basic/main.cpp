@@ -17,27 +17,41 @@ int main()
     
 //    Mat Gala1Cut = Gala1;
 //    Mat Gala2Cut = Gala2;
-    Mat Gala1Cut = Gala1(cvRect(Gala1.cols *uv[0] - 200, Gala1.rows *uv[1] - 100, 400,400));
-    Mat Gala2Cut = Gala2(cvRect(Gala2.cols *uv[0] - 200, Gala2.rows *uv[1] - 100, 400,400));
+    Mat Gala1Cut = Gala1(cvRect(Gala1.cols *uv[0] - 200, Gala1.rows *uv[1] - 200, 400,400));
+    Mat Gala2Cut = Gala2(cvRect(Gala2.cols *uv[0] - 200, Gala2.rows *uv[1] - 200, 400,400));
     
     matcher.addTrainImage(Gala2Cut);
     
     vector<KeyPoint> keypoints;
-    vector<vector<DMatch>> matches;
+    vector<DMatch> matches;
     
     matcher.match(Gala1Cut, matches, keypoints);
     
     Mat img_matches;
     drawMatches( Gala2Cut, matcher.getTrainImgKeyPoints(0), Gala1Cut, keypoints,
-                                matches[0], img_matches, Scalar::all(-1), Scalar::all(-1),
+                                matches, img_matches, Scalar::all(-1), Scalar::all(-1),
                                 vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS );
     
-    //matcher.DrawAllBoundingBoxAndTrajectories(Gala1Cut, matches, keypoints);
-    matcher.DrawAllBoundingBoxes(Gala1Cut, matches, keypoints);
-    cout << matcher.getScale(Gala1Cut, matches[0], keypoints) << endl;
     
-    imshow("compare",Gala1Cut);
-    //imshow("compare1",Gala2Cut);
+    
+    //cout << matcher.getScale(Gala1Cut, matches, keypoints) << endl;
+    vector<Point2f> goodObjPts, goodScenePts;
+    
+    matcher.getGoodKeyPoints(keypoints, matches, goodObjPts, goodScenePts);
+    
+    int lessCounter = 0;
+    float scale = 0;
+    for(int i = 0; i < matches.size(); i++) {
+        float dist1 = matcher.distance(Point2f(200,200), goodObjPts[i]);
+        float dist2 = matcher.distance(Point2f(200,200), goodScenePts[i]);
+        
+        //cout << dist1 << " " << dist2 << endl;
+        if(dist1 < dist2) {
+            lessCounter++;
+        }
+    }
+    cout << (float)lessCounter / matches.size() << endl;
+    
     imshow("compare2",img_matches);
     
     waitKey(0);

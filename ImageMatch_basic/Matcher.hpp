@@ -41,7 +41,7 @@ using namespace cv::xfeatures2d;
 #define ERRONEOUS_PREDICTION_TOLERANCE 10
 
 #define DEFAULT_DESCRIPTOR_MATCHER "FlannBased"
-#define DEFAULT_DESCRIPTOR_EXTRACTOR "SIFT"
+#define DEFAULT_DESCRIPTOR_EXTRACTOR "SURF"
 
 // some common BGR colors defined
 #define GREEN Scalar(0,255,0)
@@ -129,6 +129,13 @@ public:
     
     void ComputeAllKalmanInitPositions(Mat& scene);
     void InitKalmanStartPos(int trainIndex, Point2f startPoint);
+    
+    float distance(Point2f p1, Point2f p2);
+    
+    void getGoodKeyPoints(vector<KeyPoint>& sceneKeyPoints, vector<DMatch>& matches, vector<Point2f>& outGoodObjPts, vector<Point2f>& outGoodScenePts, int trainIndex = 0);
+    
+    // new
+    void getGoodKeyPoints(vector<KeyPoint>& objKeyPoints, vector<KeyPoint>& sceneKeyPts, vector<DMatch>& matches, vector<Point2f>& outGoodObjPts, vector<Point2f>& outGoodScenePts);
     
     // new
     int getSceneQuadCorners(Mat& scene, vector<DMatch>& matches, vector<KeyPoint>& sceneKeyPts, std::vector<Point2f>& scene_corners, int trainIndex);

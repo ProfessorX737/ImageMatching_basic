@@ -234,6 +234,30 @@ void Matcher::SymmetryTest(const vector<vector<DMatch>>& matches1,
     
 }
 
+float Matcher::distance(Point2f p1, Point2f p2) {
+    
+    float distX = (p1.x - p2.x) * (p1.x - p2.x);
+    float distY = (p1.y - p2.y) * (p1.y - p2.y);
+    
+    return sqrtf(distX + distY);
+}
+
+void Matcher::getGoodKeyPoints(vector<KeyPoint>& sceneKeyPoints, vector<DMatch>& matches, vector<Point2f>& outGoodObjPts, vector<Point2f>& outGoodScenePts, int trainIndex) {
+    
+    getGoodKeyPoints(TrainKeyPoints[trainIndex], sceneKeyPoints, matches, outGoodObjPts, outGoodScenePts);
+    
+}
+
+void Matcher::getGoodKeyPoints(vector<KeyPoint>& objKeyPoints, vector<KeyPoint>& sceneKeyPts, vector<DMatch>& matches, vector<Point2f>& outGoodObjPts, vector<Point2f>& outGoodScenePts) {
+
+    for(int i = 0; i < matches.size(); i++) {
+        // get good matching keypoint from object images and scene images
+        outGoodObjPts.push_back(objKeyPoints[matches[i].queryIdx].pt);
+        outGoodScenePts.push_back(sceneKeyPts[matches[i].trainIdx].pt);
+    }
+    
+}
+
 int Matcher::getSceneQuadCorners(Mat& scene, vector<DMatch>& matches, vector<KeyPoint>& sceneKeyPts, std::vector<Point2f>& scene_corners, int trainIndex) {
 
     std::vector<Point2f> objMatch_pts;
