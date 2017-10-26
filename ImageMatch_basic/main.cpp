@@ -1,14 +1,29 @@
 #include "Matcher.hpp"
+#include <sstream>
+#include <string>
 
 const float VP_DIM = 0.06;
 
 //float getScale(cv::Mat& image1, cv::Mat& image2, glm::vec2 uv1, glm::vec2 uv2);
 
-int main()
+int main(int argc, char **argv)
 {
+//    if (argc < 1) {
+//        std::cout << "Usage: " << argv[0] <<
+//        " <file> ...\n";
+//        return -1;
+//    }
+//    
+//    std::vector<string> images;
+//
+//    for(int i = 1; i < argc; i++) {
+//        images.emplace_back(argv[i]);
+//        cout << images[i-1] << endl;
+//    }
+//    
     Matcher matcher;
     
-    namedWindow("compare",1);
+    //namedWindow("compare",1);
     
     Mat Gala1 = imread("Textures/BLV_st_Jacques2.jpg");
     Mat Gala2 = imread("Textures/BLV_st_Jacques1.jpg");
@@ -46,6 +61,13 @@ int main()
         float dist1 = matcher.distance(Point2f(200,200), goodObjPts[i]);
         float dist2 = matcher.distance(Point2f(200,200), goodScenePts[i]);
         
+
+        line(Gala2Cut, Point2f(200,200), goodObjPts[i], GREEN, 1);
+        
+        line(Gala1Cut, Point2f(200,200), goodScenePts[i], RED,1);
+        line(Gala1Cut, Point2f(200,200), goodObjPts[i], GREEN, 1);
+        
+        
         if(dist1 < dist2) {
             lessCounter++;
         }
@@ -56,7 +78,12 @@ int main()
     }
     cout << (float)diffAccum / matches.size() << endl;
     
-    imshow("compare2",img_matches);
+    //imshow("compare2",img_matches);
+    imshow("first image keypoints",Gala2Cut);
+    imshow("second image keypoints",Gala1Cut);
+    
+    cv::imwrite("firstImageKpts.jpg", Gala2Cut);
+    cv::imwrite("secondImageKpts.jpg", Gala1Cut);
     
     waitKey(0);
     

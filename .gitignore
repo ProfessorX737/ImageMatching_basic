@@ -1,2 +1,16 @@
+DerivedData
 ImageMatch_basic/ImageMatching_basic
 ImageMatch_basic.xcodeproj
+**/*.png
+**/*.jpg
+**/*.raw
+**/*.DS_Store
+**/*.db
+**/*.db
+**/*.mp4
+**/CMakeFiles
+**/CMakeCache*
+**/cmake_install*
+**/Makefile
+**/*.exe
+**/*.out
