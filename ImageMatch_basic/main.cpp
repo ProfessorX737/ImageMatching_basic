@@ -10,8 +10,8 @@ int main()
     
     namedWindow("compare",1);
     
-    Mat Gala1 = imread("Textures/BLV_st_Jacques2.jpg");
-    Mat Gala2 = imread("Textures/BLV_st_Jacques1.jpg");
+    Mat Gala1 = imread("Textures/BLV_st_Jacques1.jpg");
+    Mat Gala2 = imread("Textures/BLV_st_Jacques2.jpg");
     
     Vec2f uv = Vec2f(0.5,0.5);
     
