@@ -15,6 +15,7 @@ line(img, Point(center.x + d, center.y - d), Point(center.x - d, center.y + d), 
 Matcher::Matcher() {
     
     Detector = SIFT::create();
+    //Detector = SURF::create();
     DesMatcher = DescriptorMatcher::create(DEFAULT_DESCRIPTOR_MATCHER);
     Extractor = FastFeatureDetector::create();
     NumTrainImages = 0;
@@ -42,9 +43,9 @@ void Matcher::addTrainImage(Mat& image) {
     vector<KeyPoint> keypoints;
     Mat descriptor;
     
-    //Detector->detectAndCompute(image, Mat(), keypoints, descriptor );
-    Extractor->detect(image, keypoints);
-    Detector->compute(image, keypoints, descriptor);
+   Detector->detectAndCompute(image, Mat(), keypoints, descriptor );
+//    Extractor->detect(image, keypoints);
+//    Detector->compute(image, keypoints, descriptor);
     
     TrainKeyPoints.push_back(keypoints);
     TrainDescriptors.push_back(descriptor);
@@ -116,9 +117,9 @@ void Matcher::match(Mat& queryImg,vector<DMatch>& outMatches, vector<KeyPoint>& 
     
     Mat targetDes;
     
-    //Detector->detectAndCompute( queryImg, Mat(), outKeypoints, targetDes );
-    Extractor->detect(queryImg, outKeypoints);
-    Detector->compute(queryImg, outKeypoints, targetDes);
+    Detector->detectAndCompute( queryImg, Mat(), outKeypoints, targetDes );
+//    Extractor->detect(queryImg, outKeypoints);
+//    Detector->compute(queryImg, outKeypoints, targetDes);
     
     // return a vector of matches where each vector element is a vector
     // containing two best match candidates
@@ -165,9 +166,9 @@ void Matcher::match(Mat& queryImg,vector<vector<DMatch>>& outMatches,vector<KeyP
     Mat targetDes;
     vector<DMatch> matches_tmp;
     
-    //Detector->detectAndCompute(queryImg, Mat(), outKeypoints, targetDes);
-    Extractor->detect(queryImg, outKeypoints);
-    Detector->compute(queryImg, outKeypoints, targetDes);
+    Detector->detectAndCompute(queryImg, Mat(), outKeypoints, targetDes);
+//    Extractor->detect(queryImg, outKeypoints);
+//    Detector->compute(queryImg, outKeypoints, targetDes);
     
     for(int i = 0; i < NumTrainImages; i++) {
         matches_tmp.clear();
